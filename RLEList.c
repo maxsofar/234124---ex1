@@ -1,6 +1,6 @@
 #include "tool/RLEList.h"
-#include "stdlib.h"
-#define ASCII_ZERO ('0')
+#include <stdlib.h>
+#include <string.h>
 
 struct RLEList_t{
     char character;
@@ -135,6 +135,17 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
     return 0;
 }
 
+static int intToString(char* destinationStr, int numOfRepetitions) {
+    int count = 0;
+    sprintf(destinationStr,"%d",numOfRepetitions);
+
+    do {
+        numOfRepetitions /= 10;
+        ++count;
+    } while (numOfRepetitions != 0);
+    return count;
+}
+
 char* RLEListExportToString(RLEList list, RLEListResult* result) {
     if (list == NULL) {
         if (result != NULL) {
@@ -144,7 +155,9 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
     }
 
     int listSize = RLEListSize(list);
-    char* string = malloc(sizeof(char) * listSize + 1);
+
+    //(?)worst case: every letter appears once - no RLE compression
+    char* string = malloc(sizeof(char) * listSize * 3 + 1);
 
     if (string == NULL) {
         return NULL;
@@ -156,8 +169,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
     while (list != NULL) {
         *stringHead = list->character;
         ++stringHead;
-        *stringHead = ASCII_ZERO + list->numberOfRepetitions;
-        ++stringHead;
+        stringHead += intToString(stringHead, list->numberOfRepetitions);;
         *stringHead = '\n';
         ++stringHead;
         list = list->next;
