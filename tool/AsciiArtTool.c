@@ -1,5 +1,6 @@
 #include "RLEList.h"
 #include "AsciiArtTool.h"
+#include <stdlib.h>
 
 struct RLEList_t{
     char character;
@@ -46,5 +47,6 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream) {
     char* str = RLEListExportToString(list, NULL);
 
     fprintf(out_stream, "%s", str);
+    free(str);
     return RLE_LIST_SUCCESS;
 }
