@@ -111,7 +111,9 @@ RLEListResult RLEListRemove(RLEList list, int index) {
 
 char RLEListGet(RLEList list, int index, RLEListResult *result) {
     if (list == NULL) {
-        *result = RLE_LIST_NULL_ARGUMENT;
+        if (result != NULL) {
+            *result = RLE_LIST_NULL_ARGUMENT;
+        }
         return 0;
     }
 
