@@ -96,7 +96,9 @@ RLEListResult RLEListRemove(RLEList list, int index) {
                 }
                 free(list);
             } else {
-                list->next->previous = list->previous;
+                if (list->next != NULL) {
+                    list->next->previous = list->previous;
+                }
                 list->previous->next = list->next;
                 free(list);
             }
