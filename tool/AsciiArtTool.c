@@ -3,7 +3,7 @@
 
 struct RLEList_t{
     char character;
-    int numberOfRepetitions;
+    int numOfRepetitions;
     RLEList previous;
     RLEList next;
 };
@@ -29,7 +29,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream) {
 
     list = list->next;       //
     while(list != NULL) {
-        for (int i = 0; i < list->numberOfRepetitions; ++i) {
+        for (int i = 0; i < list->numOfRepetitions; ++i) {
             fprintf(out_stream, "%c", list->character);
         }
         list = list->next;
@@ -43,8 +43,8 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream) {
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    char* string = RLEListExportToString(list, NULL);
+    char* str = RLEListExportToStr(list, NULL);
 
-    fprintf(out_stream, "%s", string);
+    fprintf(out_stream, "%s", str);
     return RLE_LIST_SUCCESS;
 }
