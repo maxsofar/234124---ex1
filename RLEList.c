@@ -150,7 +150,7 @@ static int intToStr(char* destinationStr, int numOfRepetitions) {
     return count;
 }
 
-char* RLEListExportToStr(RLEList list, RLEListResult* result) {
+char* RLEListExportToString(RLEList list, RLEListResult* result) {
     if (list == NULL) {
         if (result != NULL) {
             *result = RLE_LIST_NULL_ARGUMENT;

@@ -43,7 +43,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream) {
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    char* str = RLEListExportToStr(list, NULL);
+    char* str = RLEListExportToString(list, NULL);
 
     fprintf(out_stream, "%s", str);
     return RLE_LIST_SUCCESS;
