@@ -4,7 +4,7 @@
 
 struct RLEList_t{
     char character;
-    int numberOfRepetitions;
+    int numOfRepetitions;
     RLEList previous;
     RLEList next;
 };
@@ -15,7 +15,7 @@ RLEList RLEListCreate() {
         return NULL;
     }
     newList->character = '\0';
-    newList->numberOfRepetitions = 0;
+    newList->numOfRepetitions = 0;
     newList->previous = NULL;
     newList->next = NULL;
     return newList;
@@ -40,7 +40,7 @@ RLEListResult RLEListAppend(RLEList list, char value) {
     }
 
     if (list->character == value) {
-        ++list->numberOfRepetitions;
+        ++list->numOfRepetitions;
         return RLE_LIST_SUCCESS;
     } else {
         RLEList newList = RLEListCreate();
@@ -51,7 +51,7 @@ RLEListResult RLEListAppend(RLEList list, char value) {
         list->next = newList;
         newList->previous = list;
         newList->character = value;
-        ++newList->numberOfRepetitions;
+        ++newList->numOfRepetitions;
         return RLE_LIST_SUCCESS;
     }
 }
@@ -63,7 +63,7 @@ int RLEListSize(RLEList list) {
 
     int counter = 0;
     while (list != NULL) {
-        counter += list->numberOfRepetitions;
+        counter += list->numOfRepetitions;
         list = list->next;
     }
     return counter;
@@ -80,11 +80,11 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     int counter = 0;
 
     while (list != NULL) {
-        counter += list->numberOfRepetitions;
+        counter += list->numOfRepetitions;
 
         if (counter > index)
         {
-            --list->numberOfRepetitions;
+            --list->numOfRepetitions;
             return RLE_LIST_SUCCESS;
         }
         else if (counter == index)
@@ -124,7 +124,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
     ++index; //starts from zero
     int counter = 0;
     while (list != NULL) {
-        counter += list->numberOfRepetitions;
+        counter += list->numOfRepetitions;
         if (counter >= index) {
             if (result != NULL) {
                 *result = RLE_LIST_SUCCESS;
@@ -139,7 +139,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
     return 0;
 }
 
-static int intToString(char* destinationStr, int numOfRepetitions) {
+static int intToStr(char* destinationStr, int numOfRepetitions) {
     int count = 0;
     sprintf(destinationStr,"%d",numOfRepetitions);
 
@@ -150,7 +150,7 @@ static int intToString(char* destinationStr, int numOfRepetitions) {
     return count;
 }
 
-char* RLEListExportToString(RLEList list, RLEListResult* result) {
+char* RLEListExportToStr(RLEList list, RLEListResult* result) {
     if (list == NULL) {
         if (result != NULL) {
             *result = RLE_LIST_NULL_ARGUMENT;
@@ -161,28 +161,28 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
     int listSize = RLEListSize(list);
 
     //(?)worst case: every letter appears once - no RLE compression
-    char* string = malloc(sizeof(char) * listSize * 3 + 1);
+    char* str = malloc(sizeof(char) * listSize * 3 + 1);
 
-    if (string == NULL) {
+    if (str == NULL) {
         return NULL;
     }
 
-    char* stringHead = string;
+    char* strHead = str;
     list = list->next;
 
     while (list != NULL) {
-        *stringHead = list->character;
-        ++stringHead;
-        stringHead += intToString(stringHead, list->numberOfRepetitions);;
-        *stringHead = '\n';
-        ++stringHead;
+        *strHead = list->character;
+        ++strHead;
+        strHead += intToStr(strHead, list->numOfRepetitions);
+        *strHead = '\n';
+        ++strHead;
         list = list->next;
     }
-    *stringHead = '\0';
+    *strHead = '\0';
     if (result != NULL) {
         *result = RLE_LIST_SUCCESS;
     }
-    return string;
+    return str;
 }
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
@@ -199,7 +199,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
             if (list->previous->character != updatedCharacter) {
                 list->character = updatedCharacter;
             } else {
-                list->previous->numberOfRepetitions += list->numberOfRepetitions;
+                list->previous->numOfRepetitions += list->numOfRepetitions;
                 list->previous->next = list->next;
                 list->next->previous = list->previous;
                 RLEList toBeDeleted = list;
