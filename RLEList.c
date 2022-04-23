@@ -118,8 +118,11 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
         return 0;
     }
 
-    if (index < 0) {
-        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    if (index < 0 || index > RLEListSize(list)) {
+        if (result != NULL) {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
+        return 0;
     }
 
     ++index; //starts from zero
