@@ -82,27 +82,33 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     while (list != NULL) {
         counter += list->numOfRepetitions;
 
-        if (counter > index)
+        if (counter >= index)
         {
-            --list->numOfRepetitions;
-            return RLE_LIST_SUCCESS;
-        }
-        else if (counter == index)
-        {
-            if (list->previous->character != '\0') {
-                list->previous->next = list->next;
-                if (list->next != NULL) {
-                    list->next->previous = list->previous;
-                }
-                free(list);
-            } else {
-                if (list->next != NULL) {
-                    list->next->previous = list->previous;
-                }
-                list->previous->next = list->next;
-                free(list);
+            if (list->numOfRepetitions > 1) {
+                --list->numOfRepetitions;
+                return RLE_LIST_SUCCESS;
             }
-            return RLE_LIST_SUCCESS;
+            else
+            {
+                if (list->next != NULL && list->previous->character == list->next->character) {
+                    list->previous->numOfRepetitions += list->next->numOfRepetitions;
+                    if (list->next->next != NULL) {
+                        list->previous->next = list->next->next;
+                        list->next->next->previous = list->previous;
+                    } else {
+                        list->previous->next = NULL;
+                    }
+                    free(list);
+                } else {
+                    if (list->next != NULL) {
+                        list->next->previous = list->previous;
+                    }
+                    list->previous->next = list->next;
+                    free(list);
+                }
+
+                return RLE_LIST_SUCCESS;
+            }
         }
         list = list->next;
     }
@@ -117,8 +123,11 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
         return 0;
     }
 
-    if (index < 0) {
-        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    if (index < 0 || index > RLEListSize(list)) {
+        if (result != NULL) {
+            *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+        }
+        return 0;
     }
 
     ++index; //starts from zero
@@ -201,7 +210,9 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
             } else {
                 list->previous->numOfRepetitions += list->numOfRepetitions;
                 list->previous->next = list->next;
-                list->next->previous = list->previous;
+                if (list->next != NULL) {
+                    list->next->previous = list->previous;
+                }
                 RLEList toBeDeleted = list;
                 list = list->previous;
                 free(toBeDeleted);
