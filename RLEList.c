@@ -210,7 +210,9 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
             } else {
                 list->previous->numOfRepetitions += list->numOfRepetitions;
                 list->previous->next = list->next;
-                list->next->previous = list->previous;
+                if (list->next != NULL) {
+                    list->next->previous = list->previous;
+                }
                 RLEList toBeDeleted = list;
                 list = list->previous;
                 free(toBeDeleted);
