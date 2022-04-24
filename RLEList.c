@@ -1,4 +1,4 @@
-#include "tool/RLEList.h"
+#include "RLEList.h"
 #include <stdlib.h>
 #include <string.h>
 
