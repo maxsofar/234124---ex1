@@ -1,4 +1,4 @@
-#include "tool/RLEList.h"
+#include "RLEList.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -98,6 +98,7 @@ RLEListResult RLEListRemove(RLEList list, int index) {
                     } else {
                         list->previous->next = NULL;
                     }
+                    free(list->next);
                     free(list);
                 } else {
                     if (list->next != NULL) {
