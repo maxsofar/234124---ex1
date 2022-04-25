@@ -1,5 +1,4 @@
 #include "AsciiArtTool.h"
-#include "RLEList.h"
 #include <string.h>
 
 char invertFunction(char characterToBeInverted) {
