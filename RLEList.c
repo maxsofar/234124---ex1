@@ -204,20 +204,22 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
 
     while (list != NULL) {
         char updatedCharacter = map_function(list->character);
-        if (updatedCharacter != list->character)
+        if (list->previous->character != updatedCharacter)
         {
-            if (list->previous->character != updatedCharacter) {
+            if (list->character != updatedCharacter) {
                 list->character = updatedCharacter;
-            } else {
-                list->previous->numOfRepetitions += list->numOfRepetitions;
-                list->previous->next = list->next;
-                if (list->next != NULL) {
-                    list->next->previous = list->previous;
-                }
-                RLEList toBeDeleted = list;
-                list = list->previous;
-                free(toBeDeleted);
             }
+        }
+        else
+        {
+            list->previous->numOfRepetitions += list->numOfRepetitions;
+            list->previous->next = list->next;
+            if (list->next != NULL) {
+                list->next->previous = list->previous;
+            }
+            RLEList toBeDeleted = list;
+            list = list->previous;
+            free(toBeDeleted);
         }
         list = list->next;
     }
