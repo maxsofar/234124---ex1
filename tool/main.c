@@ -11,12 +11,6 @@ char invertFunction(char characterToBeInverted) {
     }
 }
 
-/*
-void error(char* message, char* filename) {
-    printf("%s %s\n", message, filename ? filename : "");
-}
-*/
-
 int main(int argc, char** argv) {
     /*
     if (argc != 4) {
@@ -26,21 +20,15 @@ int main(int argc, char** argv) {
     */
 
     FILE* source = fopen(argv[2], "r");
-    /*
     if (!source) {
-        error("Error: cannot open", argv[2]);
         return 0;
     }
-    */
 
     FILE* target = fopen(argv[3], "w");
-    /*
     if (!target) {
         fclose(source);
-        error("Error: cannot open", argv[3]);
         return 0;
     }
-    */
 
     RLEList list = asciiArtRead(source);
 
