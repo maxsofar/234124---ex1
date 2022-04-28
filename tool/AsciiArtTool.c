@@ -1,4 +1,3 @@
-#include "RLEList.h"
 #include "AsciiArtTool.h"
 #include <stdlib.h>
 
