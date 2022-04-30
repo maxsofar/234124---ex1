@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define NULL_CHARACTER_SIZE 1
+#define WORST_CASE 3
+
 struct RLEList_t{
     char character;
     int numOfRepetitions;
@@ -160,8 +163,8 @@ char* RLEListExportToStr(RLEList list, RLEListResult* result) {
 
     int listSize = RLEListSize(list);
 
-    //(?)worst case: every letter appears once - no RLE compression
-    char* str = malloc(sizeof(char) * listSize * 3 + 1);
+    //worst case: every letter appears once - no RLE compression applied
+    char* str = malloc(sizeof(char) * listSize * WORST_CASE + NULL_CHARACTER_SIZE);
 
     if (str == NULL) {
         return NULL;
