@@ -4,6 +4,7 @@
 
 #define NULL_CHARACTER_SIZE 1
 #define WORST_CASE 3
+#define NULL_CHARACTER ('\0')
 
 struct RLEList_t{
     char character;
@@ -17,7 +18,7 @@ RLEList RLEListCreate() {
     if(!newList) {
         return NULL;
     }
-    newList->character = '\0';
+    newList->character = NULL_CHARACTER;
     newList->numOfRepetitions = 0;
     newList->previous = NULL;
     newList->next = NULL;
@@ -34,7 +35,7 @@ void RLEListDestroy(RLEList list) {
 }
 
 RLEListResult RLEListAppend(RLEList list, char value) {
-    if (list == NULL || value == '\0') {
+    if (list == NULL || value == NULL_CHARACTER) {
         return RLE_LIST_NULL_ARGUMENT;
     }
 
@@ -193,7 +194,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
         ++strHead;
         list = list->next;
     }
-    *strHead = '\0';
+    *strHead = NULL_CHARACTER;
     if (result != NULL) {
         *result = RLE_LIST_SUCCESS;
     }
