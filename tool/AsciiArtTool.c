@@ -27,7 +27,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream) {
         return RLE_LIST_NULL_ARGUMENT;
     }
 
-    list = list->next;       //
+    list = list->next;
     while(list != NULL) {
         for (int i = 0; i < list->numOfRepetitions; ++i) {
             fprintf(out_stream, "%c", list->character);

@@ -5,6 +5,7 @@
 #define NULL_CHARACTER_SIZE 1
 #define WORST_CASE 3
 #define NULL_CHARACTER ('\0')
+#define NEW_LINE ('\n')
 
 struct RLEList_t{
     char character;
@@ -80,7 +81,7 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     if(index < 0) {
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
-    ++index; //starts from 0
+    ++index;
     int counter = 0;
 
     while (list != NULL) {
@@ -135,7 +136,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
         return 0;
     }
 
-    ++index; //starts from zero
+    ++index;
     int counter = 0;
     while (list != NULL) {
         counter += list->numOfRepetitions;
@@ -190,7 +191,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
         *strHead = list->character;
         ++strHead;
         strHead += intToStr(strHead, list->numOfRepetitions);
-        *strHead = '\n';
+        *strHead = NEW_LINE;
         ++strHead;
         list = list->next;
     }
