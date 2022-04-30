@@ -4,6 +4,8 @@
 
 #define NULL_CHARACTER_SIZE 1
 #define WORST_CASE 3
+#define NULL_CHARACTER ('\0')
+#define NEW_LINE ('\n')
 
 struct RLEList_t{
     char character;
@@ -17,7 +19,7 @@ RLEList RLEListCreate() {
     if(!newList) {
         return NULL;
     }
-    newList->character = '\0';
+    newList->character = NULL_CHARACTER;
     newList->numOfRepetitions = 0;
     newList->previous = NULL;
     newList->next = NULL;
@@ -34,7 +36,7 @@ void RLEListDestroy(RLEList list) {
 }
 
 RLEListResult RLEListAppend(RLEList list, char value) {
-    if (list == NULL || value == '\0') {
+    if (list == NULL || value == NULL_CHARACTER) {
         return RLE_LIST_NULL_ARGUMENT;
     }
 
@@ -79,7 +81,7 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     if(index < 0) {
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
-    ++index; //starts from 0
+    ++index;
     int counter = 0;
 
     while (list != NULL) {
@@ -134,7 +136,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
         return 0;
     }
 
-    ++index; //starts from zero
+    ++index;
     int counter = 0;
     while (list != NULL) {
         counter += list->numOfRepetitions;
@@ -189,11 +191,11 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
         *strHead = list->character;
         ++strHead;
         strHead += intToStr(strHead, list->numOfRepetitions);
-        *strHead = '\n';
+        *strHead = NEW_LINE;
         ++strHead;
         list = list->next;
     }
-    *strHead = '\0';
+    *strHead = NULL_CHARACTER;
     if (result != NULL) {
         *result = RLE_LIST_SUCCESS;
     }
