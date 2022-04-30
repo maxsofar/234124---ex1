@@ -152,6 +152,9 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
     return 0;
 }
 
+/*
+ * The func represents integer number as a string
+ */
 static int intToStr(char* destinationStr, int numOfRepetitions) {
     int count = 0;
     sprintf(destinationStr,"%d",numOfRepetitions);
@@ -173,7 +176,6 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
 
     int listSize = RLEListSize(list);
 
-    //worst case: every letter appears once - no RLE compression applied
     char* str = malloc(sizeof(char) * listSize * WORST_CASE + NULL_CHARACTER_SIZE);
 
     if (str == NULL) {
